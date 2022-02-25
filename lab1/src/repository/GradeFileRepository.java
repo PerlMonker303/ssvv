@@ -5,9 +5,9 @@ import validation.*;
 import java.io.*;
 import java.util.stream.Collectors;
 
-public class NotaFileRepository extends AbstractFileRepository<Pair<String, String>, Nota> {
+public class GradeFileRepository extends AbstractFileRepository<Pair<String, String>, Grade> {
 
-    public NotaFileRepository(Validator<Nota> validator, String filename) {
+    public GradeFileRepository(Validator<Grade> validator, String filename) {
         super(validator, filename);
         loadFromFile();
     }
@@ -16,10 +16,10 @@ public class NotaFileRepository extends AbstractFileRepository<Pair<String, Stri
         try (BufferedReader buffer = new BufferedReader(new FileReader(filename))) {
             buffer.lines().collect(Collectors.toList()).forEach(line -> {
                 String[] result = line.split("#");
-                Nota nota = new Nota(new Pair(result[0], result[1]), Double.parseDouble(result[2]),
+                Grade grade = new Grade(new Pair(result[0], result[1]), Double.parseDouble(result[2]),
                         Integer.parseInt(result[3]), result[4]);
                 try {
-                    super.save(nota);
+                    super.save(grade);
                 } catch (ValidationException ve) {
                     ve.printStackTrace();
                 }
@@ -29,10 +29,10 @@ public class NotaFileRepository extends AbstractFileRepository<Pair<String, Stri
         }
     }
 
-    protected void writeToFile(Nota nota) {
+    protected void writeToFile(Grade grade) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true))) {
-            bw.write(nota.getID().getObject1() + "#" + nota.getID().getObject2() + "#" + nota.getNota() + "#"
-                    + nota.getSaptamanaPredare() + "#" + nota.getFeedback() + "\n");
+            bw.write(grade.getID().getObject1() + "#" + grade.getID().getObject2() + "#" + grade.getGrade() + "#"
+                    + grade.getSaptamanaPredare() + "#" + grade.getFeedback() + "\n");
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -42,7 +42,7 @@ public class NotaFileRepository extends AbstractFileRepository<Pair<String, Stri
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename, false))) {
             super.entities.values().forEach(nota -> {
                 try {
-                    bw.write(nota.getID().getObject1() + "#" + nota.getID().getObject2() + "#" + nota.getNota()
+                    bw.write(nota.getID().getObject1() + "#" + nota.getID().getObject2() + "#" + nota.getGrade()
                             + "#" + nota.getSaptamanaPredare() + "#" + nota.getFeedback() + "\n");
                 } catch (IOException e) {
                     e.printStackTrace();

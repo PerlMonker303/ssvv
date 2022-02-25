@@ -1,27 +1,27 @@
 package domain;
 
-public class Nota implements HasID<Pair<String, String>> {
-    Pair<String, String> idNota;
-    private double nota;
+public class Grade implements HasID<Pair<String, String>> {
+    Pair<String, String> idGrade;
+    private double grade;
     private int saptamanaPredare;
     private String feedback;
 
-    public Nota(Pair<String, String> idNota, double nota, int saptamanaPredare, String feedback) {
-        this.idNota = idNota;
-        this.nota = nota;
+    public Grade(Pair<String, String> idGrade, double grade, int saptamanaPredare, String feedback) {
+        this.idGrade = idGrade;
+        this.grade = grade;
         this.saptamanaPredare = saptamanaPredare;
         this.feedback = feedback;
     }
 
     @Override
-    public Pair<String, String> getID() { return idNota; }
+    public Pair<String, String> getID() { return idGrade; }
 
     @Override
-    public void setID(Pair<String, String> idNota) { this.idNota = idNota; }
+    public void setID(Pair<String, String> idGrade) { this.idGrade = idGrade; }
 
-    public double getNota() { return nota; }
+    public double getGrade() { return grade; }
 
-    public void setNota(double nota) { this.nota = nota; }
+    public void setGrade(double grade) { this.grade = grade; }
 
     public int getSaptamanaPredare() { return saptamanaPredare; }
 
@@ -34,9 +34,9 @@ public class Nota implements HasID<Pair<String, String>> {
     @Override
     public String toString() {
         return "Nota{" +
-                "id_student = " + idNota.getObject1() +
-                ", id_tema = " + idNota.getObject2() +
-                ", nota = " + nota +
+                "id_student = " + idGrade.getObject1() +
+                ", id_tema = " + idGrade.getObject2() +
+                ", nota = " + grade +
                 ", saptamanaPredare = " + saptamanaPredare +
                 ", feedback = '" + feedback + '\'' +
                 '}';

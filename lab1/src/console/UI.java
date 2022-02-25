@@ -37,14 +37,14 @@ public class UI {
         }
     }
 
-    public void uiPrintAllTeme() {
-        for(Tema tema : service.findAllTeme()) {
-            System.out.println(tema);
+    public void uiPrintAllAssignments() {
+        for(Assignment assignment : service.findAllAssignments()) {
+            System.out.println(assignment);
         }
     }
 
-    public void uiPrintAllNote() {
-        for(Nota note : service.findAllNote()) {
+    public void uiPrintAllGrades() {
+        for(Grade note : service.findAllGrades()) {
             System.out.println(note);
         }
     }
@@ -69,7 +69,7 @@ public class UI {
         }
     }
 
-    public void uiSaveTema() {
+    public void uiSaveAssignment() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Introduceti ID-ul temei: ");
@@ -84,7 +84,7 @@ public class UI {
         System.out.println("Introduceti saptamana startline a temei: ");
         int startline = scanner.nextInt();
 
-        if (service.saveTema(id, descriere, deadline, startline) != 0) {
+        if (service.saveAssignment(id, descriere, deadline, startline) != 0) {
             System.out.println("Tema adaugata cu succes! \n");
         }
         else {
@@ -92,7 +92,7 @@ public class UI {
         }
     }
 
-    public void uiSaveNota() {
+    public void uiSaveGrade() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Introduceti ID-ul studentului: ");
@@ -112,7 +112,7 @@ public class UI {
         System.out.println("Dati un feedback temei: ");
         String feedback = scanner.nextLine();
 
-        int result = service.saveNota(idStudent, idTema, valNota, predata, feedback);
+        int result = service.saveGrade(idStudent, idTema, valNota, predata, feedback);
         if (result == 1) {
             service.createStudentFile(idStudent, idTema);
             System.out.println("Nota adaugata cu succes! \n");
@@ -139,13 +139,13 @@ public class UI {
         }
     }
 
-    public void uiDeleteTema() {
+    public void uiDeleteAssignment() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Introduceti ID-ul temei: ");
         String id = scanner.nextLine();
 
-        if (service.deleteTema(id) != 0) {
+        if (service.deleteAssignment(id) != 0) {
             System.out.println("Tema stearsa cu succes! \n");
         }
         else {
@@ -206,25 +206,25 @@ public class UI {
                     uiPrintAllStudents();
                     break;
                 case 12:
-                    uiPrintAllTeme();
+                    uiPrintAllAssignments();
                     break;
                 case 13:
-                    uiPrintAllNote();
+                    uiPrintAllGrades();
                     break;
                 case 21:
                     uiSaveStudent();
                     break;
                 case 22:
-                    uiSaveTema();
+                    uiSaveAssignment();
                     break;
                 case 23:
-                    uiSaveNota();
+                    uiSaveGrade();
                     break;
                 case 31:
                     uiDeleteStudent();
                     break;
                 case 32:
-                    uiDeleteTema();
+                    uiDeleteAssignment();
                     break;
                 case 4:
                     uiUpdateStudent();

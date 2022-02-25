@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class Student implements HasID<String> {
     private String idStudent;
-    private String nume;
-    private int grupa;
+    private String name;
+    private int group;
 
-    public Student(String idStudent, String nume, int grupa) {
+    public Student(String idStudent, String name, int group) {
         this.idStudent = idStudent;
-        this.nume = nume;
-        this.grupa = grupa;
+        this.name = name;
+        this.group = group;
     }
 
     @Override
@@ -19,25 +19,25 @@ public class Student implements HasID<String> {
     @Override
     public void setID(String idStudent) { this.idStudent = idStudent; }
 
-    public String getNume() {
-        return nume;
+    public String getName() {
+        return name;
     }
 
-    public void setNume(String nume) {
-        this.nume = nume;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getGrupa() {
-        return grupa;
+    public int getGroup() {
+        return group;
     }
 
-    public void setGrupa(int grupa) {
-        this.grupa = grupa;
+    public void setGroup(int group) {
+        this.group = group;
     }
 
     @Override
     public String toString() {
-        return "Student{" + "idStudent=" + idStudent + ", nume='" + nume + '\'' + ", grupa=" + grupa + '\'' + '}';
+        return "Student{" + "idStudent=" + idStudent + ", nume='" + name + '\'' + ", grupa=" + group + '\'' + '}';
     }
 
     @Override

@@ -9,12 +9,12 @@ import validation.*;
 public class Main {
     public static void main(String[] args) {
         Validator<Student> studentValidator = new StudentValidator();
-        Validator<Tema> temaValidator = new TemaValidator();
-        Validator<Nota> notaValidator = new NotaValidator();
+        Validator<Assignment> assignmentValidator = new AssignmentValidator();
+        Validator<Grade> gradeValidator = new GradeValidator();
 
         StudentXMLRepository fileRepository1 = new StudentXMLRepository(studentValidator, "studenti.xml");
-        TemaXMLRepository fileRepository2 = new TemaXMLRepository(temaValidator, "teme.xml");
-        NotaXMLRepository fileRepository3 = new NotaXMLRepository(notaValidator, "note.xml");
+        AssignmentXMLRepository fileRepository2 = new AssignmentXMLRepository(assignmentValidator, "teme.xml");
+        GradeXMLRepository fileRepository3 = new GradeXMLRepository(gradeValidator, "note.xml");
 
         Service service = new Service(fileRepository1, fileRepository2, fileRepository3);
         UI consola = new UI(service);

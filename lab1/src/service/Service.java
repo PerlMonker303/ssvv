@@ -8,25 +8,25 @@ import java.time.temporal.WeekFields;
 import java.util.Locale;
 
 public class Service {
-    private StudentXMLRepository studentXmlRepo;
-    private TemaXMLRepository temaXmlRepo;
-    private NotaXMLRepository notaXmlRepo;
+    private StudentXMLRepository studentXMLRepository;
+    private AssignmentXMLRepository assignmentXMLRepository;
+    private GradeXMLRepository gradeXMLRepository;
 
-    public Service(StudentXMLRepository studentXmlRepo, TemaXMLRepository temaXmlRepo, NotaXMLRepository notaXmlRepo) {
-        this.studentXmlRepo = studentXmlRepo;
-        this.temaXmlRepo = temaXmlRepo;
-        this.notaXmlRepo = notaXmlRepo;
+    public Service(StudentXMLRepository studentXMLRepository, AssignmentXMLRepository assignmentXMLRepository, GradeXMLRepository gradeXMLRepository) {
+        this.studentXMLRepository = studentXMLRepository;
+        this.assignmentXMLRepository = assignmentXMLRepository;
+        this.gradeXMLRepository = gradeXMLRepository;
     }
 
-    public Iterable<Student> findAllStudents() { return studentXmlRepo.findAll(); }
+    public Iterable<Student> findAllStudents() { return studentXMLRepository.findAll(); }
 
-    public Iterable<Tema> findAllTeme() { return temaXmlRepo.findAll(); }
+    public Iterable<Assignment> findAllAssignments() { return assignmentXMLRepository.findAll(); }
 
-    public Iterable<Nota> findAllNote() { return notaXmlRepo.findAll(); }
+    public Iterable<Grade> findAllGrades() { return gradeXMLRepository.findAll(); }
 
-    public int saveStudent(String id, String nume, int grupa) {
-        Student student = new Student(id, nume, grupa);
-        Student result = studentXmlRepo.save(student);
+    public int saveStudent(String id, String name, int group) {
+        Student student = new Student(id, name, group);
+        Student result = studentXMLRepository.save(student);
 
         if (result == null) {
             // create file for student ?
@@ -36,9 +36,9 @@ public class Service {
         return 0;
     }
 
-    public int saveTema(String id, String descriere, int deadline, int startline) {
-        Tema tema = new Tema(id, descriere, deadline, startline);
-        Tema result = temaXmlRepo.save(tema);
+    public int saveAssignment(String id, String description, int deadline, int startline) {
+        Assignment assignment = new Assignment(id, description, deadline, startline);
+        Assignment result = assignmentXMLRepository.save(assignment);
 
         if (result == null) {
             return 1;
@@ -46,20 +46,20 @@ public class Service {
         return 0;
     }
 
-    public int saveNota(String idStudent, String idTema, double valNota, int predata, String feedback) {
-        if (studentXmlRepo.findOne(idStudent) == null || temaXmlRepo.findOne(idTema) == null) {
+    public int saveGrade(String idStudent, String idAssignment, double valGrade, int predata, String feedback) {
+        if (studentXMLRepository.findOne(idStudent) == null || assignmentXMLRepository.findOne(idAssignment) == null) {
             return -1;
         }
         else {
-            int deadline = temaXmlRepo.findOne(idTema).getDeadline();
+            int deadline = assignmentXMLRepository.findOne(idAssignment).getDeadline();
 
             if (predata - deadline > 2) {
-                valNota =  1;
+                valGrade =  1;
             } else if(predata > deadline){
-                valNota =  valNota - 2.5 * (predata - deadline);
+                valGrade =  valGrade - 2.5 * (predata - deadline);
             }
-            Nota nota = new Nota(new Pair(idStudent, idTema), valNota, predata, feedback);
-            Nota result = notaXmlRepo.save(nota);
+            Grade grade = new Grade(new Pair(idStudent, idAssignment), valGrade, predata, feedback);
+            Grade result = gradeXMLRepository.save(grade);
 
             if (result == null) {
                 return 1;
@@ -69,7 +69,7 @@ public class Service {
     }
 
     public int deleteStudent(String id) {
-        Student result = studentXmlRepo.delete(id);
+        Student result = studentXMLRepository.delete(id);
 
         if (result == null) {
             return 0;
@@ -77,8 +77,8 @@ public class Service {
         return 1;
     }
 
-    public int deleteTema(String id) {
-        Tema result = temaXmlRepo.delete(id);
+    public int deleteAssignment(String id) {
+        Assignment result = assignmentXMLRepository.delete(id);
 
         if (result == null) {
             return 0;
@@ -86,9 +86,9 @@ public class Service {
         return 1;
     }
 
-    public int updateStudent(String id, String numeNou, int grupaNoua) {
-        Student studentNou = new Student(id, numeNou, grupaNoua);
-        Student result = studentXmlRepo.update(studentNou);
+    public int updateStudent(String id, String newName, int newGroup) {
+        Student studentNou = new Student(id, newName, newGroup);
+        Student result = studentXMLRepository.update(studentNou);
 
         if (result == null) {
             return 0;
@@ -96,9 +96,9 @@ public class Service {
         return 1;
     }
 
-    public int updateTema(String id, String descriereNoua, int deadlineNou, int startlineNou) {
-        Tema temaNoua = new Tema(id, descriereNoua, deadlineNou, startlineNou);
-        Tema result = temaXmlRepo.update(temaNoua);
+    public int updateAssignment(String id, String newDescription, int newDeadline, int newStartline) {
+        Assignment newAssignment = new Assignment(id, newDescription, newDeadline, newStartline);
+        Assignment result = assignmentXMLRepository.update(newAssignment);
 
         if (result == null) {
             return 0;
@@ -107,9 +107,9 @@ public class Service {
     }
 
     public int extendDeadline(String id, int noWeeks) {
-        Tema tema = temaXmlRepo.findOne(id);
+        Assignment assignment = assignmentXMLRepository.findOne(id);
 
-        if (tema != null) {
+        if (assignment != null) {
             LocalDate date = LocalDate.now();
             WeekFields weekFields = WeekFields.of(Locale.getDefault());
             int currentWeek = date.get(weekFields.weekOfWeekBasedYear());
@@ -120,19 +120,19 @@ public class Service {
                 currentWeek = currentWeek + 12;
             }
 
-            if (currentWeek <= tema.getDeadline()) {
-                int deadlineNou = tema.getDeadline() + noWeeks;
-                return updateTema(tema.getID(), tema.getDescriere(), deadlineNou, tema.getStartline());
+            if (currentWeek <= assignment.getDeadline()) {
+                int deadlineNou = assignment.getDeadline() + noWeeks;
+                return updateAssignment(assignment.getID(), assignment.getDescription(), deadlineNou, assignment.getStartline());
             }
         }
         return 0;
     }
 
-    public void createStudentFile(String idStudent, String idTema) {
-        Nota nota = notaXmlRepo.findOne(new Pair(idStudent, idTema));
+    public void createStudentFile(String idStudent, String idAssignment) {
+        Grade grade = gradeXMLRepository.findOne(new Pair(idStudent, idAssignment));
 
         try {
-            notaXmlRepo.createFile(nota);
+            gradeXMLRepository.createFile(grade);
         }catch(IllegalStateException ex){
             System.out.println(ex.getMessage());
         }
