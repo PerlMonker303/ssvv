@@ -2,31 +2,38 @@ package service;
 
 import domain.*;
 import repository.*;
+import validation.AssignmentValidator;
+import validation.StudentValidator;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 
 public class Service {
-    private StudentXMLRepository studentXMLRepository;
-    private AssignmentXMLRepository assignmentXMLRepository;
-    private GradeXMLRepository gradeXMLRepository;
+    private CRUDRepository<String, Student> studentRepository;
+    private CRUDRepository<String, Assignment> assignmentRepository;
+    private CRUDRepository<Pair<String, String>, Grade> gradeRepository;
 
-    public Service(StudentXMLRepository studentXMLRepository, AssignmentXMLRepository assignmentXMLRepository, GradeXMLRepository gradeXMLRepository) {
-        this.studentXMLRepository = studentXMLRepository;
-        this.assignmentXMLRepository = assignmentXMLRepository;
-        this.gradeXMLRepository = gradeXMLRepository;
+    public Service(CRUDRepository<String, Student> studentRepository,
+                   CRUDRepository<String, Assignment> assignmentRepository,
+                   CRUDRepository<Pair<String, String>, Grade> gradeRepository) {
+        this.studentRepository = studentRepository;
+        this.assignmentRepository = assignmentRepository;
+        this.gradeRepository = gradeRepository;
     }
 
-    public Iterable<Student> findAllStudents() { return studentXMLRepository.findAll(); }
+    public Iterable<Student> findAllStudents() { return studentRepository.findAll(); }
 
-    public Iterable<Assignment> findAllAssignments() { return assignmentXMLRepository.findAll(); }
+    public Iterable<Assignment> findAllAssignments() { return assignmentRepository.findAll(); }
 
-    public Iterable<Grade> findAllGrades() { return gradeXMLRepository.findAll(); }
+    public Iterable<Grade> findAllGrades() { return gradeRepository.findAll(); }
 
     public int saveStudent(String id, String name, int group) {
         Student student = new Student(id, name, group);
-        Student result = studentXMLRepository.save(student);
+        Student result = studentRepository.save(student);
 
         if (result == null) {
             // create file for student ?
@@ -38,7 +45,7 @@ public class Service {
 
     public int saveAssignment(String id, String description, int deadline, int startline) {
         Assignment assignment = new Assignment(id, description, deadline, startline);
-        Assignment result = assignmentXMLRepository.save(assignment);
+        Assignment result = assignmentRepository.save(assignment);
 
         if (result == null) {
             return 1;
@@ -47,11 +54,11 @@ public class Service {
     }
 
     public int saveGrade(String idStudent, String idAssignment, double valGrade, int predata, String feedback) {
-        if (studentXMLRepository.findOne(idStudent) == null || assignmentXMLRepository.findOne(idAssignment) == null) {
+        if (studentRepository.findOne(idStudent) == null || assignmentRepository.findOne(idAssignment) == null) {
             return -1;
         }
         else {
-            int deadline = assignmentXMLRepository.findOne(idAssignment).getDeadline();
+            int deadline = assignmentRepository.findOne(idAssignment).getDeadline();
 
             if (predata - deadline > 2) {
                 valGrade =  1;
@@ -59,7 +66,7 @@ public class Service {
                 valGrade =  valGrade - 2.5 * (predata - deadline);
             }
             Grade grade = new Grade(new Pair(idStudent, idAssignment), valGrade, predata, feedback);
-            Grade result = gradeXMLRepository.save(grade);
+            Grade result = gradeRepository.save(grade);
 
             if (result == null) {
                 return 1;
@@ -69,7 +76,7 @@ public class Service {
     }
 
     public int deleteStudent(String id) {
-        Student result = studentXMLRepository.delete(id);
+        Student result = studentRepository.delete(id);
 
         if (result == null) {
             return 0;
@@ -78,7 +85,7 @@ public class Service {
     }
 
     public int deleteAssignment(String id) {
-        Assignment result = assignmentXMLRepository.delete(id);
+        Assignment result = assignmentRepository.delete(id);
 
         if (result == null) {
             return 0;
@@ -88,7 +95,7 @@ public class Service {
 
     public int updateStudent(String id, String newName, int newGroup) {
         Student studentNou = new Student(id, newName, newGroup);
-        Student result = studentXMLRepository.update(studentNou);
+        Student result = studentRepository.update(studentNou);
 
         if (result == null) {
             return 0;
@@ -98,7 +105,7 @@ public class Service {
 
     public int updateAssignment(String id, String newDescription, int newDeadline, int newStartline) {
         Assignment newAssignment = new Assignment(id, newDescription, newDeadline, newStartline);
-        Assignment result = assignmentXMLRepository.update(newAssignment);
+        Assignment result = assignmentRepository.update(newAssignment);
 
         if (result == null) {
             return 0;
@@ -107,7 +114,7 @@ public class Service {
     }
 
     public int extendDeadline(String id, int noWeeks) {
-        Assignment assignment = assignmentXMLRepository.findOne(id);
+        Assignment assignment = assignmentRepository.findOne(id);
 
         if (assignment != null) {
             LocalDate date = LocalDate.now();
@@ -129,12 +136,39 @@ public class Service {
     }
 
     public void createStudentFile(String idStudent, String idAssignment) {
-        Grade grade = gradeXMLRepository.findOne(new Pair(idStudent, idAssignment));
+        Grade grade = gradeRepository.findOne(new Pair(idStudent, idAssignment));
 
         try {
-            gradeXMLRepository.createFile(grade);
+            this.createFile(grade);
         }catch(IllegalStateException ex){
             System.out.println(ex.getMessage());
+        }
+    }
+
+    public void createFile(Grade gradeObj) {
+        String               idStudent = gradeObj.getID().getObject1();
+        Student student = studentRepository.findOne(idStudent);
+
+        if(student == null){
+            throw new IllegalStateException("Student not found in text file");
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(student.getName() + ".txt", false))) {
+            gradeRepository.findAll().forEach(nota -> {
+                if (nota.getID().getObject1().equals(idStudent)) {
+                    try {
+                        bw.write("Tema: " + nota.getID().getObject2() + "\n");
+                        bw.write("Nota: " + nota.getGrade() + "\n");
+                        bw.write("Predata in saptamana: " + nota.getSaptamanaPredare() + "\n");
+                        bw.write("Deadline: " + assignmentRepository.findOne(nota.getID().getObject2()).getDeadline() + "\n");
+                        bw.write("Feedback: " + nota.getFeedback() + "\n\n");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 }
