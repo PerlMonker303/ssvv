@@ -3,6 +3,7 @@ package console;
 import domain.*;
 import service.Service;
 
+import java.util.IllegalFormatException;
 import java.util.Scanner;
 
 public class UI {
@@ -59,6 +60,9 @@ public class UI {
         String nume = scanner.nextLine();
 
         System.out.println("Introduceti grupa studentului: ");
+        if (!scanner.hasNextInt()) {
+            throw new IllegalArgumentException("Error: Group must be an integer value.");
+        }
         int grupa = scanner.nextInt();
 
         if (service.saveStudent(id, nume, grupa) != 0) {
@@ -79,9 +83,15 @@ public class UI {
         String descriere = scanner.nextLine();
 
         System.out.println("Introduceti saptamana deadline a temei: ");
+        if (!scanner.hasNextInt()) {
+            throw new IllegalArgumentException("Error: Deadline must be an integer value.");
+        }
         int deadline = scanner.nextInt();
 
         System.out.println("Introduceti saptamana startline a temei: ");
+        if (!scanner.hasNextInt()) {
+            throw new IllegalArgumentException("Error: Startline must be an integer value.");
+        }
         int startline = scanner.nextInt();
 
         if (service.saveAssignment(id, descriere, deadline, startline) != 0) {
@@ -163,6 +173,9 @@ public class UI {
         String numeNou = scanner.nextLine();
 
         System.out.println("Introduceti noua grupa a studentului: ");
+        if (!scanner.hasNextInt()) {
+            throw new IllegalArgumentException("Error: new group must be an integer value.");
+        }
         int grupaNoua = scanner.nextInt();
 
         if (service.updateStudent(id, numeNou, grupaNoua) != 0) {
@@ -180,6 +193,9 @@ public class UI {
         String id = scanner.nextLine();
 
         System.out.println("Introduceti numarul de saptamani adaugate la deadline: ");
+        if (!scanner.hasNextInt()) {
+            throw new IllegalArgumentException("Error: number of weeks must be an integer value.");
+        }
         int nrWeeks = scanner.nextInt();
 
         if (service.extendDeadline(id, nrWeeks) != 0) {
@@ -201,40 +217,44 @@ public class UI {
             System.out.println("Introduceti comanda: ");
             cmd = scanner.nextInt();
 
-            switch(cmd) {
-                case 11:
-                    uiPrintAllStudents();
-                    break;
-                case 12:
-                    uiPrintAllAssignments();
-                    break;
-                case 13:
-                    uiPrintAllGrades();
-                    break;
-                case 21:
-                    uiSaveStudent();
-                    break;
-                case 22:
-                    uiSaveAssignment();
-                    break;
-                case 23:
-                    uiSaveGrade();
-                    break;
-                case 31:
-                    uiDeleteStudent();
-                    break;
-                case 32:
-                    uiDeleteAssignment();
-                    break;
-                case 4:
-                    uiUpdateStudent();
-                    break;
-                case 5:
-                    uiExtendDeadline();
-                    break;
-                case 0:
-                    cmd = 0;
-                    break;
+            try {
+                switch (cmd) {
+                    case 11:
+                        uiPrintAllStudents();
+                        break;
+                    case 12:
+                        uiPrintAllAssignments();
+                        break;
+                    case 13:
+                        uiPrintAllGrades();
+                        break;
+                    case 21:
+                        uiSaveStudent();
+                        break;
+                    case 22:
+                        uiSaveAssignment();
+                        break;
+                    case 23:
+                        uiSaveGrade();
+                        break;
+                    case 31:
+                        uiDeleteStudent();
+                        break;
+                    case 32:
+                        uiDeleteAssignment();
+                        break;
+                    case 4:
+                        uiUpdateStudent();
+                        break;
+                    case 5:
+                        uiExtendDeadline();
+                        break;
+                    case 0:
+                        cmd = 0;
+                        break;
+                }
+            }catch(Exception e){
+                System.out.println(e.getMessage());
             }
         }
     }
