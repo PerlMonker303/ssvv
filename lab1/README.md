@@ -6,3 +6,6 @@
     - method *createStudentFile* from *Service.java* catches the error mentioned above
     - comments: the XML side of things works perfectly, however the .txt file logic is not yet perfect since
     assigning a grade to a student does not store the newly introduced data in the xml files.  
+
+- 26.02.2022
+    - added pom.xml file
