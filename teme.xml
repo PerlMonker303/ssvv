@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Entitati>
-    <assignment ID="1">
+    <tema ID="1">
         <Descriere>File</Descriere>
         <Deadline>7</Deadline>
         <Startline>6</Startline>
-    </assignment>
-    <assignment ID="2">
+    </tema>
+    <tema ID="2">
         <Descriere>XML</Descriere>
         <Deadline>8</Deadline>
         <Startline>7</Startline>
-    </assignment>
-    <assignment ID="3">
+    </tema>
+    <tema ID="3">
         <Descriere>gui</Descriere>
         <Deadline>9</Deadline>
         <Startline>7</Startline>
-    </assignment>
-    <assignment ID="665">
+    </tema>
+    <tema ID="665">
         <Descriere>Workwork</Descriere>
         <Deadline>3</Deadline>
         <Startline>2</Startline>
-    </assignment>
-    <assignment ID="456">
+    </tema>
+    <tema ID="456">
         <Descriere>test456</Descriere>
         <Deadline>3</Deadline>
         <Startline>2</Startline>
-    </assignment>
-    <assignment ID="998">
+    </tema>
+    <tema ID="998">
         <Descriere>O noua assignment de casa$%$</Descriere>
         <Deadline>13</Deadline>
         <Startline>11</Startline>
-    </assignment>
+    </tema>
+    <tema ID="10">
+        <Descriere>popopopo</Descriere>
+        <Deadline>4</Deadline>
+        <Startline>3</Startline>
+    </tema>
 </Entitati>

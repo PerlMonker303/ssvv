@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Entitati>
-    <grade IDStudent="5" IDTema="456">
+    <nota IDStudent="11" IDTema="10">
+        <Nota>10.0</Nota>
+        <SaptamanaPredare>4</SaptamanaPredare>
+        <Feedback>bines</Feedback>
+    </nota>
+    <nota IDStudent="5" IDTema="456">
         <Nota>9.0</Nota>
         <SaptamanaPredare>2</SaptamanaPredare>
         <Feedback>Good</Feedback>
-    </grade>
-    <grade IDStudent="7" IDTema="1">
+    </nota>
+    <nota IDStudent="7" IDTema="1">
         <Nota>7.0</Nota>
         <SaptamanaPredare>7</SaptamanaPredare>
         <Feedback>Nope</Feedback>
-    </grade>
-    <grade IDStudent="7" IDTema="2">
+    </nota>
+    <nota IDStudent="7" IDTema="2">
         <Nota>10.0</Nota>
         <SaptamanaPredare>8</SaptamanaPredare>
         <Feedback>good</Feedback>
-    </grade>
-    <grade IDStudent="7" IDTema="456">
+    </nota>
+    <nota IDStudent="7" IDTema="456">
         <Nota>10.0</Nota>
         <SaptamanaPredare>3</SaptamanaPredare>
         <Feedback>good</Feedback>
-    </grade>
+    </nota>
 </Entitati>

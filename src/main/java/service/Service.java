@@ -36,8 +36,6 @@ public class Service {
         Student result = studentRepository.save(student);
 
         if (result == null) {
-            // create file for student ?
-
             return 1;
         }
         return 0;
