@@ -3,19 +3,10 @@ package service;
 import domain.Assignment;
 import domain.Grade;
 import domain.Student;
-import junit.framework.TestCase;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.MockitoRule;
 import repository.AssignmentRepository;
 import repository.GradeRepository;
 import repository.StudentRepository;
@@ -24,11 +15,7 @@ import validation.GradeValidator;
 import validation.StudentValidator;
 import validation.Validator;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ServiceTestWBT extends TestCase {
-
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
+public class ServiceTestWBT {
 
     private static final Validator<Student>    studentValidator    = new StudentValidator();
     private static final Validator<Assignment> assignmentValidator = new AssignmentValidator();

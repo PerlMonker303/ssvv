@@ -3,14 +3,13 @@ package service;
 import domain.Assignment;
 import domain.Grade;
 import domain.Student;
-import junit.framework.TestCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import repository.*;
 import validation.*;
 
-public class ServiceTest extends TestCase {
+public class ServiceTest {
     private static final Validator<Student> studentValidator = new StudentValidator();
     private static final Validator<Assignment> assignmentValidator = new AssignmentValidator();
     private static final Validator<Grade> gradeValidator = new GradeValidator();
