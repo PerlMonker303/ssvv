@@ -4,7 +4,6 @@ import domain.Assignment;
 import domain.Grade;
 import domain.Student;
 import junit.framework.TestCase;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
