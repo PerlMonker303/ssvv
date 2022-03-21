@@ -36,7 +36,7 @@ public class ServiceTestWBT {
 
 
     @Test
-    public void testSaveStudentTC1() {
+    public void testSaveAssignmentTC1() {
         // Arrange
         String id = "1";
         String description = "some desc";
@@ -53,7 +53,7 @@ public class ServiceTestWBT {
     }
 
     @Test
-    public void testSaveStudentTC2() {
+    public void testSaveAssignmentTC2() {
         // Arrange
         String id = "1";
         String description = "some desc";
