@@ -15,7 +15,7 @@ import validation.GradeValidator;
 import validation.StudentValidator;
 import validation.Validator;
 
-public class ServiceTestWBT {
+public class ServiceWBTTest {
 
     private static final Validator<Student>    studentValidator    = new StudentValidator();
     private static final Validator<Assignment> assignmentValidator = new AssignmentValidator();
